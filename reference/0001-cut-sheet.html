@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference: The Cut Sheet</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <h1>The Cut Sheet</h1>
+  <p class="standfirst">One page. Print it. The five lines of a first deployment, the questions
+  that produce each one, what disqualifies an answer, and the shape of the interview round that
+  tests all of it.</p>
+  <p class="meta">
+    <span>Reference 01</span><span class="sep">&middot;</span>
+    <span>from <a href="../lessons/0001-the-cut.html">Lesson 01</a></span>
+  </p>
+</header>
+
+<h2>The five lines</h2>
+
+<pre><code>One user:      &lt;a person you could email this afternoon&gt;
+One workflow:  &lt;start &rarr; end, N times per week&gt;
+One baseline:  &lt;measured number + who counted + how&gt;  |  UNMEASURED + the plan to fix that
+One slice:     &lt;smallest thing that runs end to end on their real input&gt;
+One kill:      &lt;number + date that ends the pilot&gt;</code></pre>
+
+<h2>Question bank</h2>
+
+<table>
+  <thead><tr><th>Line</th><th>Ask</th><th>Disqualifies the answer</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>User</td>
+      <td>Who does this today? What is their name? Can I sit with them this week?<br>
+          Who notices first when it goes wrong?</td>
+      <td>A team, a role plural, a persona, a job title with no body attached.</td>
+    </tr>
+    <tr>
+      <td>Workflow</td>
+      <td>Walk me through the last one you did. What triggered it? What did you have open?
+          What made it end? How many this week?</td>
+      <td>A noun ("claims", "onboarding", "reporting"). No trigger. No frequency.</td>
+    </tr>
+    <tr>
+      <td>Baseline</td>
+      <td>How long does one take? Who timed it? Over what period? How often is it redone
+          or corrected? What does the system log say?</td>
+      <td>A round number nobody counted. An average over several different workflows.
+          A figure sourced to a board deck.</td>
+    </tr>
+    <tr>
+      <td>Slice</td>
+      <td>What is the smallest version that this person would use on Monday, on their
+          real inputs? What can stay manual in v1?</td>
+      <td>Anything ending at a demo, a dashboard, or a model evaluation. Anything whose
+          first user is not the named user.</td>
+    </tr>
+    <tr>
+      <td>Kill</td>
+      <td>If this number has not moved by this date, do we stop? Who decides? What
+          happens to the deployment if we do?</td>
+      <td>A target with no floor. A date with no number. Nobody empowered to call it.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Red flags in the room</h2>
+
+<ul>
+  <li><strong>The named workflow and the done workflow differ.</strong> The executive's ask is a
+  solution they have already imagined. The user's pain is somewhere else in the building. Both are
+  real; only one has a baseline.</li>
+  <li><strong>The number arrived pre-rounded.</strong> Twenty minutes, two million, thirty percent.
+  Ask who counted. Write the answer down next to the number, always.</li>
+  <li><strong>Nobody in the room does the work.</strong> If the person who performs the workflow is
+  not present and cannot be scheduled, you do not have a deployment, you have a brief.</li>
+  <li><strong>A data-class blocker with a calendar on it.</strong> Review boards, data residency,
+  an unapproved model class. These do not get narrowed around; they get solved first or the scope
+  moves to data you are allowed to touch.</li>
+  <li><strong>Enthusiastic scope expansion.</strong> "And once that works we could also&hellip;"
+  is a good sign about the relationship and a bad sign about the sheet. Write it in a parking lot
+  section; it is Lesson 07's material, not this pilot's.</li>
+</ul>
+
+<h2>What an unmeasured baseline is allowed to look like</h2>
+
+<pre><code>Baseline: UNMEASURED.
+          &lt;who&gt; estimates &lt;figure&gt;; no instrumentation exists.
+          Week 1: &lt;who&gt; will &lt;count what&gt; over &lt;period&gt; before the slice is agreed.</code></pre>
+
+<p>Three parts, all required: the admission, the provenance of the guess, and the dated plan that
+replaces it. Any one of the three missing and it reads as either sloppiness or hedging.</p>
+
+<h2>The decomposition round</h2>
+
+<p>The open-ended case study is consistently reported as the highest-failure stage of the FDE
+loop (<a href="https://www.tryexponent.com/blog/forward-deployed-engineer-interview-the-definitive-2026-guide-fde">Exponent,
+2026</a> &mdash; secondary, but corroborated across write-ups). The prompts look like: <em>"A
+regional bank wants to unify fraud detection across three acquired systems with inconsistent
+labels. Scope the first 90 days."</em> You have 45&ndash;60 minutes and no further information
+unless you ask for it.</p>
+
+<p>The cut sheet is the answer, delivered out loud, in this order:</p>
+
+<ol>
+  <li><strong>Clarify before solving.</strong> Three to five questions, each one aimed at a
+  specific line of the sheet. Say which line you are filling.</li>
+  <li><strong>Name your assumptions as assumptions.</strong> Out loud, labelled. Interviewers are
+  scoring whether you know which of your inputs are evidence and which are guesses.</li>
+  <li><strong>Map the stakeholders.</strong> Who does the work, who pays, who can block. The
+  blocker is the one candidates forget and the one that kills real deployments.</li>
+  <li><strong>Sequence by risk, not by dependency.</strong> Do the thing first that would most
+  cheaply prove the whole idea wrong.</li>
+  <li><strong>Propose the slice, then the kill criterion.</strong> Volunteering the failure
+  condition unprompted is the strongest single move available in this round.</li>
+</ol>
+
+<div class="note">
+  <span class="label">If you are given no information at all</span>
+  <p>Say what you would need, pick the most plausible version, and label it: "I'll assume the
+  three systems have no shared customer key, because that is the usual case and it is also the
+  worst case &mdash; tell me if that's wrong." Then proceed. Stalling for information reads as
+  inability to act under ambiguity, which is the trait the round exists to measure.</p>
+</div>
+
+<h2>Lines to have ready verbatim</h2>
+
+<ul>
+  <li><em>Why FDE and not SWE?</em> &mdash; "Because I want to be accountable for whether the
+  thing works in production, not for whether I shipped the ticket."</li>
+  <li><em>Why do AI labs need FDEs?</em> &mdash; the capability&ndash;application gap:
+  the model is general, the value is specific, and closing that distance needs someone who can
+  read the workflow and write the code.</li>
+  <li><em>Why do pilots fail?</em> &mdash; MIT NANDA attributes it to brittle workflows and poor
+  fit with daily operations, not to model capability. Application-layer problem; that is the job.</li>
+</ul>
+
+<footer class="colophon">
+  <div class="nav-row">
+    <a href="../lessons/0001-the-cut.html">Lesson 01: The Cut</a>
+    <a href="../glossary.html">Glossary</a>
+    <a href="../resources.html">Resources</a>
+    <a href="../index.html">Course index</a>
+  </div>
+  <div class="ask">
+    <strong>Your teacher is in the terminal.</strong> This page is deliberately terse. Ask for the
+    expansion of any row you cannot already defend out loud.
+  </div>
+</footer>
+
+</div>
+</body>
+</html>

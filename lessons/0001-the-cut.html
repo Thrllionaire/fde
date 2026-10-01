@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Cut: Scoping a First Deployment</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <h1>The Cut</h1>
+  <p class="standfirst">You can already build the thing. This workspace is about the half-hour
+  before you are allowed to: a room, an executive with a vague ask, and the decision about what
+  the first deployment actually is. Get the cut wrong and the build is wasted no matter how good
+  it is. Today: five lines that turn an ask into a deployment, and the two of them that are hard.</p>
+  <p class="meta">
+    <span>Lesson 01</span><span class="sep">&middot;</span>
+    <span>Forward Deployed Engineering</span><span class="sep">&middot;</span>
+    <span>about 25 minutes</span>
+  </p>
+</header>
+
+<h2>Calibrate</h2>
+
+<div class="quiz" data-quiz>
+  <p class="q"><span class="num">Check 1 of 1</span>A Forward Deployed Engineer is distinguished
+  from a solutions architect or a consultant by one thing. Which?</p>
+  <div class="opts">
+    <button class="opt" data-correct>Accountable for whether the deployed system actually works in production</button>
+    <button class="opt">Spends most of the working week on site at the customer</button>
+    <button class="opt">Reports into the sales organisation instead of into product engineering</button>
+    <button class="opt">Specialises in a single industry vertical instead of many accounts</button>
+  </div>
+  <div class="feedback"
+    data-when-correct="Right, and it is the whole thing. Consultants also sit on site, also know the vertical, also report oddly. What none of them own is whether the system is still running and used in six months. That ownership is what makes scoping your problem instead of someone else's."
+    data-when-wrong="Site presence, reporting line and vertical focus are all true of consultants too — none of them separate the roles. The separator is accountability for the outcome: the FDE owns whether the deployed system works and gets adopted, not whether a deliverable was delivered. That is why the scoping decision lands on you.">
+  </div>
+</div>
+
+<h2>The gap you are hired into</h2>
+
+<p>Frontier labs hire FDEs for a specific reason, and it is worth being able to say it in one
+sentence at a recruiter screen. Anjor Kanekar, seven years an FDE at Palantir, puts it as well as
+anyone: <a href="https://posthog.com/blog/forward-deployed-engineer">&ldquo;There is a gap between
+foundational model capabilities and the application of those in enterprise use cases where they
+can add value.&rdquo;</a> The model is general. The value is specific. Somebody has to stand in
+the specific place and close the distance, and that person has to be able to both read the
+workflow and write the code &mdash; which is why it is an engineer and not an account manager.</p>
+
+<p>Bob McGrew, who helped invent the role at Palantir before running research at OpenAI, describes
+the model as <a href="https://www.youtube.com/watch?v=Zyw-YA0k3xo">&ldquo;doing things that don't
+scale, at scale.&rdquo;</a> That is a statement about economics, and it has a consequence you feel
+on day one: the per-customer work is expensive, so the first deployment has to be <em>small</em>
+and it has to <em>land</em>. Those two constraints together are what the cut is for.</p>
+
+<h2>Why the cut is the job and not the preamble</h2>
+
+<p>The most-quoted number in enterprise AI is that 95% of generative-AI pilots produce no
+measurable P&amp;L impact. It comes from MIT Media Lab's Project NANDA, <a
+href="https://www.aigl.blog/state-of-ai-in-business-2025/"><em>The GenAI Divide: State of AI in
+Business 2025</em></a> &mdash; 300-plus publicly disclosed initiatives, 52 structured interviews,
+153 survey responses, gathered January to June 2025. Use the number carefully; it is not a random
+sample of enterprises and the figure gets flung around by people who have not read the method.</p>
+
+<p>But the finding underneath it is the one that matters to you, and it is not the headline. The
+authors attribute the failures to <strong>brittle workflows, weak contextual learning, and poor
+fit with daily operations</strong> &mdash; not to model capability. The pilots did not fail because
+the model was not smart enough. They failed because somebody picked the wrong workflow, or picked
+a real workflow and never found out what it cost before they changed it, or built something nobody
+could tell was working.</p>
+
+<p>Those are all scoping failures. They happen before the first line of code and they are
+unrecoverable afterwards. This is the good news about the role: the highest-leverage thing you do
+all engagement is a decision you make in week one with no code at all.</p>
+
+<div class="quiz" data-quiz>
+  <p class="q"><span class="num">Check 1 of 1</span>The NANDA authors attribute the 95% failure
+  rate to a specific cause. Which?</p>
+  <div class="opts">
+    <button class="opt" data-correct>Brittle workflows and poor fit with daily operational reality</button>
+    <button class="opt">Model capability falling short of what the use cases demanded</button>
+    <button class="opt">Insufficient compute budget allocated to the pilot deployments themselves</button>
+    <button class="opt">Security review boards blocking pilots long before they ever launched</button>
+  </div>
+  <div class="feedback"
+    data-when-correct="Right — and this is the sentence to have ready when an interviewer asks why FDEs exist. The bottleneck is at the application layer, which is exactly where a forward-deployed engineer stands."
+    data-when-wrong="It was brittle workflows and poor fit with daily operations: an application-layer problem, not a model problem. Security review is a real killer and shows up in Lesson 04, but it is not what the study found. Getting this right matters because it is the argument for the role existing at all.">
+  </div>
+</div>
+
+<h2>The cut sheet: five lines</h2>
+
+<p>Here is the artifact. Five lines, one sentence each, on one page. You write it in week one, you
+show it to the customer, and you do not start building until every line is filled from evidence
+rather than from somebody's hopes.</p>
+
+<table>
+  <thead>
+    <tr><th>Line</th><th>The question that produces it</th><th>Failure mode</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>One user</strong></td>
+      <td>Who, by name, does this today? Could I email them this afternoon?</td>
+      <td>A department. &ldquo;The ops team&rdquo; has no workflow and cannot be shadowed.</td>
+    </tr>
+    <tr>
+      <td><strong>One workflow</strong></td>
+      <td>What do they do, how many times a week, starting with what and ending with what?</td>
+      <td>A category. &ldquo;Claims&rdquo; is a dozen workflows wearing one coat.</td>
+    </tr>
+    <tr>
+      <td><strong>One baseline</strong></td>
+      <td>What does it cost today, and who counted?</td>
+      <td>An estimate repeated until it sounds measured. See below.</td>
+    </tr>
+    <tr>
+      <td><strong>One thin slice</strong></td>
+      <td>What is the smallest thing that runs end to end and moves that number?</td>
+      <td>A demo. A slice that stops short of the user's real input is a prototype.</td>
+    </tr>
+    <tr>
+      <td><strong>One kill criterion</strong></td>
+      <td>What number, unmet by what date, ends this?</td>
+      <td>Absent, because nobody wanted to say it out loud.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Three of these are easy once you know to ask. Two are not, and the two hard ones are where
+candidates lose the decomposition round.</p>
+
+<h3>The baseline is almost never a number yet</h3>
+
+<p>When you ask what a workflow costs today, you will get a number. It will be confident, round,
+and sourced from nobody. &ldquo;About twenty minutes.&rdquo; &ldquo;Roughly two million a
+year.&rdquo; These are not baselines, they are <em>hypotheses about</em> the baseline, and the
+difference decides whether your pilot can be judged at the end.</p>
+
+<p>The move is not to argue. It is to write the line with its provenance attached:</p>
+
+<pre><code><span class="c"># not this</span>
+Baseline: 20 minutes per quote.
+
+<span class="c"># this</span>
+Baseline: UNMEASURED. VP Ops estimates ~20 min/quote; no instrumentation.
+          Week 1: time 6 real quotes with Priya before the slice is agreed.</code></pre>
+
+<p>Writing <code>UNMEASURED</code> on a page you hand an executive feels rude the first time. It
+is the single most credible thing on the sheet. It says you intend the success number to mean
+something, and it buys you the one week you need to make that true.</p>
+
+<div class="note trap">
+  <span class="label">The trap</span>
+  <p>The baseline is the line that quietly decides the fate of the pilot, which is why it is the
+  line everyone fills in fastest. An unmeasured baseline cannot be beaten &mdash; it can only be
+  argued with, six months later, by a CFO who was not in the room. If you take one habit from this
+  lesson, take this: <strong>never write a number on the baseline line that you cannot say who
+  counted.</strong></p>
+</div>
+
+<h3>The kill criterion is a gift, not a threat</h3>
+
+<p>Asking a customer to agree in writing what would make this a failure sounds like the fastest
+way to lose the room. It is the opposite, for a reason worth internalising: a success number with
+no failure number attached is unfalsifiable, and everybody in the room knows it. Proposing the
+kill criterion is the move that marks you as someone who intends to be measured.</p>
+
+<p>It also protects you. The thing that kills FDE engagements is not failure, it is
+<em>pilot purgatory</em> &mdash; the deployment that works, is liked, and never goes to production
+because no one ever defined what crossing the line looked like. A date with a number on it is the
+exit from purgatory in both directions.</p>
+
+<div class="note why">
+  <span class="label">Where this came from</span>
+  <p>The cut has to be small enough to re-cut. When Shyam Sankar invented the model in 2006 he
+  flew to Virginia every Sunday, demoed to CIA and DIA analysts Monday through Thursday, flew back
+  Friday, and the team coded over the weekend &mdash; <a
+  href="https://colossus.com/article/the-patriot-shyam-sankar-palantir/">a one-week loop</a>. A
+  scope you cannot revisit in a week is not a first deployment; it is a bet. Keep the slice inside
+  the loop you can actually run.</p>
+</div>
+
+<h2>Drill: what is your next move?</h2>
+
+<p>Six moments from real-shaped kickoffs. In each, you have one move left before the meeting ends.
+The option set is the same every time, so the wording gives nothing away &mdash; only the situation
+does.</p>
+
+<div class="triage" data-triage>
+  <div class="triage-stage" data-stage></div>
+  <div class="triage-bar">
+    <span data-score></span>
+    <button data-next>Next &rarr;</button>
+  </div>
+  <script type="application/json" data-cases>
+  {
+    "options": [
+      { "id": "user",     "label": "Ask who, by name, does this today" },
+      { "id": "narrow",   "label": "Narrow it to one workflow, not a category" },
+      { "id": "baseline", "label": "Ask what it costs today, and who counted" },
+      { "id": "slice",    "label": "Propose the thin slice and a date" },
+      { "id": "stop",     "label": "Say this is not a first deployment yet" }
+    ],
+    "cases": [
+      {
+        "prompt": "<strong>VP of Operations, minute three:</strong> &ldquo;We want to use AI to make the operations team dramatically more efficient. Leadership has allocated budget. Where do we start?&rdquo;",
+        "answer": "user",
+        "why": {
+          "user": "Yes. There is no workflow here, no number, nothing to narrow — there is not yet a human being in the sentence. Everything else on the sheet hangs off a named person, so that is the first thing you take out of the room.",
+          "narrow": "There is nothing to narrow yet. 'The operations team' is not a category of workflows, it is a category of people. Narrowing comes after you have one person whose week you can describe.",
+          "baseline": "Cost of what? You cannot baseline 'efficiency'. A baseline is attached to a specific workflow done by a specific person, and you have neither.",
+          "slice": "Proposing a slice here is how you end up building the thing the executive imagined rather than the thing anyone does. You have no evidence to slice against.",
+          "stop": "Too early to walk. A vague opening ask is the normal state of a kickoff, not a red flag — it is exactly the condition the role exists for."
+        }
+      },
+      {
+        "prompt": "<strong>Director of Claims:</strong> &ldquo;Our adjusters live in this system all day. Marcus has been here nine years, he can show you anything. We want to automate claims.&rdquo;",
+        "answer": "narrow",
+        "why": {
+          "narrow": "Yes. You have a named user and you have access to him — that half is done. 'Claims' is the problem: intake, triage, document review, reserve setting, fraud flags and settlement are separate workflows with separate data and separate owners. Pick one or you will scope all six.",
+          "user": "You already have him. Marcus, nine years, available. Asking again burns the move.",
+          "baseline": "Baseline of which workflow? Ask for a number now and you will get one averaged over six different jobs, which is worse than no number because it looks like evidence.",
+          "slice": "A slice of 'claims' is not a slice. You would be choosing the workflow implicitly, by what you happened to build, instead of deliberately.",
+          "stop": "Nothing here is blocked. You have a user, access, and a budget holder in the room — this is a good engagement with a scope that is one question too wide."
+        }
+      },
+      {
+        "prompt": "<strong>Sales Ops lead:</strong> &ldquo;Priya in pricing rebuilds the quote model by hand for every RFP that comes in. She does it constantly. Honestly it takes her a while each time.&rdquo;",
+        "answer": "baseline",
+        "why": {
+          "baseline": "Yes. User named, workflow named, and the only two quantities in the sentence are 'constantly' and 'a while'. Those are the two words that most often become an unfalsifiable pilot. Get a count and a duration, and get who counted.",
+          "user": "Priya. It is in the sentence.",
+          "narrow": "'Rebuilds the quote model for every RFP' is already one workflow with a clear start and end. Narrowing further would be cutting a task in half, not finding the task.",
+          "slice": "You could build something plausible from this and it might even help. You would just have no way to prove it did, because you never found out what the before looked like.",
+          "stop": "This is the healthiest thing you have heard all day: a specific person doing a specific repetitive thing. This is the engagement."
+        }
+      },
+      {
+        "prompt": "<strong>Same meeting, forty minutes later:</strong> &ldquo;We pulled it. Priya logged 41 quotes last week. We timed six end to end: 35 to 50 minutes. Review catches a pricing error in roughly one in five.&rdquo;",
+        "answer": "slice",
+        "why": {
+          "slice": "Yes. Named user, one workflow, a measured baseline with a stated method and a sample size. Three lines are filled from evidence. Asking another discovery question now is not rigour, it is flinching — propose the slice and the date while the room is warm.",
+          "user": "Priya, still.",
+          "narrow": "One workflow, measured. Narrowing now would be shrinking the problem below the point where solving it is worth anything.",
+          "baseline": "You have it, and it is a real one: n=6 timed, 41/week, 20% error rate. Note what makes it real — somebody says how it was counted.",
+          "stop": "This is as clean a first deployment as you will be handed. Walking away from it would need a reason that is not in the transcript."
+        }
+      },
+      {
+        "prompt": "<strong>CFO, unprompted, near the end:</strong> &ldquo;Just so you have the context — finance has this process costing us about two million a year. That is the number in the board deck.&rdquo;",
+        "answer": "baseline",
+        "why": {
+          "baseline": "Yes, and this is the hard one. A number arriving with a board deck attached feels like a measurement and is not one until you know what went into it. Ask how it was computed and over what period. Then write it on the sheet with its provenance, not as a fact.",
+          "user": "Already have one. The CFO is not offering a user, he is offering a justification.",
+          "narrow": "The scope did not just widen. A cost figure attached to the same workflow does not change its boundaries.",
+          "slice": "Slicing against an unaudited $2M makes that number your success criterion by default. If it was built from a headcount assumption you never saw, you have inherited someone else's arithmetic as your pass mark.",
+          "stop": "A soft number is not a reason to stop. It is a reason to ask one more question before it hardens into the thing you are judged against."
+        }
+      },
+      {
+        "prompt": "<strong>Head of Security, on the way out:</strong> &ldquo;Worth flagging: no model has been approved to see customer data here. That review board sits twice a year and the next one is in March.&rdquo;",
+        "answer": "stop",
+        "why": {
+          "stop": "Yes. Every other line can be perfect and this pilot still cannot run on real data for five months. That is not a first deployment, it is a blocker with a date on it — and naming it now is worth more than a scope document. Either find a workflow with no customer data in it, or make the March board the deliverable.",
+          "user": "You may well have a named user. They are not permitted to give you their data, which makes the name worth nothing this quarter.",
+          "narrow": "Narrowing does not help: the constraint is on the data class, not on the workflow's size.",
+          "baseline": "You could measure beautifully and still not be allowed to build. Measurement is cheap here, but it is not the move that unblocks anything.",
+          "slice": "Slicing around this is how a pilot becomes a synthetic-data demo that proves nothing and convinces nobody. Lesson 04 is about this gauntlet in full."
+        }
+      }
+    ]
+  }
+  </script>
+</div>
+
+<h2>Drill: write the sheet</h2>
+
+<p>Recognition is not production. Write the five lines blind &mdash; the criteria appear only after
+you commit, and the model answer after that.</p>
+
+<div class="rewrite" data-rewrite>
+  <div class="rw-stage" data-stage></div>
+  <div class="rw-bar">
+    <span data-score></span>
+    <button data-next>Next &rarr;</button>
+  </div>
+  <script type="application/json" data-cases>
+  {
+    "cases": [
+      {
+        "num": "Cut sheet 1 of 1",
+        "situation": "Regional hospital group, ninety minutes into kickoff. On the whiteboard is the scope as the customer's programme manager wrote it. You have met Dana, a scheduling coordinator at the largest outpatient clinic, who rebooks appointments cancelled under 24 hours' notice by phoning down a waitlist. She thinks she does &ldquo;maybe fifteen or twenty&rdquo; a day. Nobody has counted. Rewrite the whiteboard as a five-line cut sheet.",
+        "current": "Scope: Deploy an AI scheduling assistant to improve patient throughput\nacross the outpatient network.\nSuccess: measurable efficiency gains.\nTimeline: Q2.",
+        "placeholder": "One user:\nOne workflow:\nOne baseline:\nOne thin slice:\nOne kill criterion:",
+        "rubric": [
+          "Line 1 names a person or a role so specific you could email them this afternoon — not a department, not 'schedulers'.",
+          "Line 2 names one workflow with a start, an end, and a frequency — something that happens a countable number of times per week.",
+          "Line 3 either carries a measured number WITH how it was measured, or says explicitly that it is unmeasured and names who will count what, by when.",
+          "Line 4 is an artifact that runs end to end for that one user on her real inputs — not a model choice, not a demo, not a dashboard.",
+          "Line 5 is a number and a date that would end the pilot — a floor you could fail, not a target you hope to beat."
+        ],
+        "answer": "One user:      Dana, scheduling coordinator, Northside outpatient clinic.\nOne workflow:  Refilling same-day cancellations (<24h notice) by phoning down\n               the waitlist, from cancellation notice to a confirmed rebooking.\nOne baseline:  UNMEASURED. Dana estimates 15-20/day; no instrumentation exists.\n               Week 1: Dana tallies cancellations and logs call time for five\n               working days before the slice is agreed.\nOne slice:     A ranked call list, delivered to Dana each morning and on each\n               cancellation, ordered by who is most likely to accept. She calls.\n               No automated outreach in v1.\nOne kill:      If by 15 June the fill rate on same-day cancellations has not\n               risen above the week-1 measured rate, we stop.",
+        "note": "Three things to check against your version. <strong>The slice keeps Dana on the phone.</strong> Automating the outreach is the obvious v1 and it is wrong: it moves the project from a scheduling problem into a patient-communication problem, which drags in compliance, consent and brand, and none of those are measurable by 15 June. <strong>The baseline is a plan, not a number.</strong> Fifteen-to-twenty is Dana's guess, and 15 and 20 are a 33% spread — wide enough to swallow the entire improvement you are about to claim. <strong>The kill criterion is anchored to the week-1 measurement, not to a target.</strong> You cannot name the pass mark honestly until the baseline exists, and writing one anyway is how you end up defending a number you invented."
+      }
+    ]
+  }
+  </script>
+</div>
+
+<h2>Build: cut a real one</h2>
+
+<p>The drills are recognition and a warm-up. The deliverable is in
+<code>practice/01-the-cut/</code>. <code>TRANSCRIPT.md</code> is a kickoff meeting at a mid-market
+industrial distributor, written the way these actually go: a loud executive, a quiet person who
+does the work, two numbers, and a lot of noise. <code>NOTES.md</code> is your worksheet.</p>
+
+<ol>
+  <li><strong>Read the transcript once, then close it</strong> and write down what you think the
+  project is. One sentence. Date it. You will want this later.</li>
+  <li><strong>Write the cut sheet.</strong> Five lines, in the file, in full sentences. Not a
+  summary of what the lines would say &mdash; the lines.</li>
+  <li><strong>Name what you cannot fill.</strong> At least one line cannot be honestly completed
+  from the transcript alone. Say which, say why, and write the exact question you would ask to
+  fill it &mdash; the words you would say, not the topic you would raise.</li>
+  <li><strong>Defend it.</strong> Three hostile questions are in <code>NOTES.md</code>. Answer
+  them in writing before you bring the sheet to me.</li>
+  <li><strong>Compare</strong> step 4's answers against step 1's sentence. If they disagree, that
+  gap is the lesson, and it is the one to bring to the debrief.</li>
+</ol>
+
+<div class="note trap">
+  <span class="label">House rule, carried over</span>
+  <p>When a step asks for a sentence, the deliverable is the sentence. In the agent workspace this
+  took four lessons to settle: a verdict about what you would write is not what you would write,
+  and only one of the two can be graded. Everything in this course is prose, so the rule bites
+  harder here.</p>
+</div>
+
+<footer class="colophon">
+
+  <h2>Read this next</h2>
+  <p><strong>Primary source:</strong> Bob McGrew on the YC Lightcone podcast, <a
+  href="https://www.youtube.com/watch?v=Zyw-YA0k3xo">&ldquo;The FDE Playbook for AI
+  Startups&rdquo;</a>. He invented the role's vocabulary at Palantir and then watched the AI labs
+  adopt it &mdash; the Echo/Delta split, why product discovery is the bottleneck when there is no
+  incumbent product to copy, and the economic argument for doing things that don't scale. Watch it
+  once at normal speed before Lesson 02.</p>
+  <p>If you want the human version instead of the structural one, read Nabeel Qureshi's <a
+  href="https://nabeelqu.co/reflections-on-palantir">Reflections on Palantir</a> &mdash; eight
+  years as an FDE, written after leaving, and the source for most of Lesson 02.</p>
+
+  <h2>In this workspace</h2>
+  <div class="nav-row">
+    <a href="../reference/0001-cut-sheet.html">Reference: The Cut Sheet</a>
+    <a href="../glossary.html">Glossary</a>
+    <a href="../resources.html">Resources</a>
+    <a href="../index.html">Course index</a>
+    <a href="../../learnaiagents/lessons/0002-workflow-or-agent.html">Agents L02: Workflow or Agent?</a>
+  </div>
+  <p style="margin-top:1rem;font-size:0.875rem;color:var(--ink-faint)">
+  <strong>Next lesson:</strong> discovery &mdash; how you get the evidence those five lines need
+  out of people who cannot tell you what they do, and will not let you watch for free.</p>
+
+  <div class="ask">
+    <strong>Your teacher is in the terminal.</strong> Bring the five lines themselves, the line you
+    could not fill and the exact question you would ask to fill it, and your three answers to the
+    hostile questions. Worth asking too: &ldquo;what do I do when the executive's named workflow
+    and the user's real workflow are different, and the executive is paying?&rdquo; and
+    &ldquo;how small is too small &mdash; when does a thin slice stop being worth deploying?&rdquo;
+  </div>
+
+</footer>
+
+</div>
+<script src="../assets/quiz.js"></script>
+<script src="../assets/triage.js"></script>
+<script src="../assets/rewrite.js"></script>
+</body>
+</html>
